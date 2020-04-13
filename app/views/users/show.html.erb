@@ -8,3 +8,32 @@
   <p><span>email: </span><%= @user.email %></p> 
   <p><span>ツイート内容: </span><%=link_to tweet.body, tweet_path(tweet.id) %></p>
   <% end %>
+
+  <% @favorite_tweets.each do |tweet| %>
+  <hr>
+  <p><span>ファボツイート内容: </span><%=link_to tweet.body, tweet_path(tweet.id) %></p>
+<% end %>
+
+
+<div class="container">
+    <% if current_user %>
+      <%= form_with(model: [@tweet, @comment], local: true) do |form| %>
+        <%= form.text_area :text, placeholder: "コメントする", rows: "2" %>
+        <%= form.submit "SEND" %>
+      <% end %>
+    <% else %>
+      <strong><p>※※※ コメントの投稿には新規登録/ログインが必要です ※※※</p></strong>
+    <% end %>
+  </div>
+
+  <div class="comments">
+      <h4>＜コメント一覧＞</h4>
+      <% if @comments %>
+        <% @comments.each do |comment| %>
+          <p>
+            <strong><%= link_to comment.user.nickname, "/users/#{comment.user_id}" %>：</strong>
+            <%= comment.text %>
+          </p>
+        <% end %>
+      <% end %>
+    </div>
